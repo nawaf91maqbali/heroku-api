@@ -6,6 +6,12 @@ const port = process.env.PORT || 3000;
 // Use body-parser middleware to parse JSON data
 app.use(bodyParser.json());
 
+// Enable CORS for all origins (you can restrict to specific origins later)
+app.use(cors({
+    origin: 'https://crs-oman.netlify.app', // Allow requests only from your frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+}));
+
 // The crimes data (provided by you)
 let crimesData = [
     {

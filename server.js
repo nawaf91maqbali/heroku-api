@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // Enable CORS for all origins (you can restrict to specific origins later)
 app.use(cors({
-    origin: 'https://crs-oman.netlify.app', // Allow requests only from your frontend
+    origin: '*', // Allow requests only from your frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
 }));
 
@@ -177,6 +177,9 @@ let crimesData = [
     }
 ];
 
+// Variable to track the last used id
+let lastId = crimesData.length > 0 ? Math.max(...crimesData.map(c => c.id)) : 0;
+
 // Set up the API endpoint to retrieve all crimes
 app.get('/api/crimes', (req, res) => {
     res.json(crimesData);
@@ -195,12 +198,16 @@ app.get('/api/crimes/:id', (req, res) => {
 
 // Set up the API endpoint to add a new crime (POST)
 app.post('/api/crimes', (req, res) => {
-    const newCrime = req.body;  // This is the data sent in the POST request
+    const newCrime = req.body;
 
-    // Optionally, validate the incoming data
-    if (!newCrime.id || !newCrime.crime_type || !newCrime.report_details) {
+    // Validate required fields
+    if (!newCrime.crime_type || !newCrime.report_details) {
         return res.status(400).send('Missing required fields');
     }
+
+    // Increment the last id and assign it to the new crime
+    lastId++;
+    newCrime.id = lastId;
 
     // Add the new crime to the crimesData array
     crimesData.push(newCrime);

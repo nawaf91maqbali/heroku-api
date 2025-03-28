@@ -218,9 +218,9 @@ app.post('/api/crimes', (req, res) => {
 
 //Set up a Post api to wakeup the service when it go to sleep mode
 app.post('/api/wakeup', (req, res) => {
-    const wakeupStr = req.body;
+    const wakeup = req.body;
 
-    return res.status(200).send(`Service Wakeup Succssfully with Message ${wakeupStr}`);
+    return res.status(200).send(`Service Wakeup Succssfully with Message ${wakeup.message}`);
 });
 
 // Start the server
